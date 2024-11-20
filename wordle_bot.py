@@ -23,13 +23,14 @@ def get_score(word: str, wrong: dict, wrong_pos: dict, correct: dict) -> int:
     score = 0
 
     for i, c in enumerate(word):
+        if c in correct and i in correct[c]:
+            score += 25
+            continue
+
         if c in wrong:
             score -= 10
             continue
 
-        if c in correct and i in correct[c]:
-            score += 25
-            continue
 
         if c in wrong_pos and i not in wrong_pos[c]:
             # count wrong pos and compare
