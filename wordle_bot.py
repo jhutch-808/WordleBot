@@ -56,8 +56,8 @@ def get_highest_score_words(words: list[str], wrong: dict, wrong_pos: dict, corr
 
     scores.sort(key=lambda x: x[1], reverse=True)
     res = [x for x in scores if x[1] == scores[0][1]]
-    print(res[:10], wrong, wrong_pos, correct)
-    return [x[0] for x in res]
+    return res
+    # return [x[0] for x in res]
 
 def get_word_occurence(words: list, occurences: dict[str, int]) -> dict[str, int]:
     scores = {}
@@ -124,6 +124,17 @@ if __name__ == "__main__":
                 else:
                     correct[letter] = set([i])
 
-        words = get_highest_score_words(words, wrong, wrong_pos, correct)
-        # print(words)
+        found_words = get_highest_score_words(words, wrong, wrong_pos, correct)
+        _words = [x[0] for x in found_words]
+        if found_words[0][1] >= 70:
+            scores = _words
+        else:
+            letter_occurences = get_letter_occurence(_words)
+            word_occurence_scores = get_word_occurence(_words, letter_occurences)
+
+            scores = list(word_occurence_scores.items())
+            scores.sort(key=lambda x: x[1], reverse=True)
+            highest_occs = [x[0] for x in scores]
+        print(f"Suggestions: {scores[:10]}")
+        # # print(scores)
         
